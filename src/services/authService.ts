@@ -40,12 +40,14 @@ export const authService = {
 
   async logout() {
     try {
-      // Call logout endpoint if backend requires
+      // Try to call logout endpoint if backend available
       await api.post('/auth/logout');
-    } catch (error) {
-      console.error('Logout error:', error);
+    } catch (error: any) {
+      // Silently fail - network error or endpoint doesn't exist
+      // Still proceed with local logout
+      console.debug('Logout API call failed (expected in demo mode):', error.message);
     } finally {
-      // Clear local state
+      // Always clear local state regardless of API success
       useUserStore.getState().logout();
     }
   },
