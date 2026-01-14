@@ -39,10 +39,10 @@ const agentSchema = z.object({
     .min(1, 'Max conversations must be at least 1')
     .max(100, 'Max conversations cannot exceed 100'),
   // Keep as string in the form; we'll convert to array on submit
-  keywords: z.string().optional().default(''),
+  keywords: z.string().default(''),
 });
 
-type AgentFormData = z.infer<typeof agentSchema>;
+type AgentFormInput = z.input<typeof agentSchema>;
 
 interface DialogState {
   type: 'agent' | 'routing' | null;
@@ -68,10 +68,11 @@ export default function AgentsPage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<AgentFormData>({
+  } = useForm<AgentFormInput>({
     resolver: zodResolver(agentSchema),
     defaultValues: {
       maxConversations: 10,
+      keywords: '',
     },
   });
 
@@ -119,7 +120,7 @@ export default function AgentsPage() {
     }
   };
 
-  const onSubmitAgent = async (data: AgentFormData) => {
+  const onSubmitAgent = async (data: AgentFormInput) => {
     setIsSubmitting(true);
     try {
       const keywordsArray = (data.keywords || '')

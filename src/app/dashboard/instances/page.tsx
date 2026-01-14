@@ -76,7 +76,7 @@ export default function InstancesPage() {
 
   const handleStartSession = async (instance: Instance) => {
     try {
-      const { qrCode } = await instanceService.startSession(instance.id);
+      const { qrCode } = await instanceService.getQRCode(instance.id);
       setQRCodeModal({
         open: true,
         qrCode,

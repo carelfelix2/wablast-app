@@ -64,6 +64,25 @@ export const instanceService = {
     }
   },
 
+  async getQRCode(instanceId: string): Promise<{ qrCode: string }> {
+    try {
+      const response = await api.get<{ qrCode: string }>(`/instance/${instanceId}/qr`);
+      return response.data;
+    } catch (error) {
+      // Demo mode: generate a demo QR code as data URL
+      try {
+        const demoData = `qr_instance_${instanceId}_${Date.now()}`;
+        const qrCode = await QRCode.toDataURL(demoData);
+        return { qrCode };
+      } catch (qrError) {
+        return {
+          qrCode:
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        };
+      }
+    }
+  },
+
   async getInstanceStatus(instanceId: string): Promise<Instance> {
     try {
       const response = await api.get<Instance>(`/instance/${instanceId}`);

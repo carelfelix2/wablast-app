@@ -7,6 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useEffect, useState } from 'react';
+import QRCode from 'qrcode';
 
 interface QRCodeModalProps {
   open: boolean;
@@ -21,7 +23,32 @@ export function QRCodeModal({
   qrCode,
   instanceName,
 }: QRCodeModalProps) {
+  const [renderSrc, setRenderSrc] = useState<string | undefined>(undefined);
   const isDataUrl = qrCode?.startsWith('data:');
+
+  useEffect(() => {
+    let cancelled = false;
+    async function prepare() {
+      if (!qrCode) {
+        setRenderSrc(undefined);
+        return;
+      }
+      if (isDataUrl) {
+        setRenderSrc(qrCode);
+        return;
+      }
+      try {
+        const dataUrl = await QRCode.toDataURL(qrCode);
+        if (!cancelled) setRenderSrc(dataUrl);
+      } catch {
+        if (!cancelled) setRenderSrc(undefined);
+      }
+    }
+    prepare();
+    return () => {
+      cancelled = true;
+    };
+  }, [qrCode, isDataUrl]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -34,18 +61,16 @@ export function QRCodeModal({
         </DialogHeader>
 
         <div className="flex justify-center py-6">
-          {qrCode ? (
-            isDataUrl ? (
-              <img
-                src={qrCode}
-                alt="WhatsApp QR Code"
-                className="w-64 h-64 rounded-lg"
-              />
-            ) : (
-              <div className="w-64 h-64 bg-slate-100 rounded-lg flex items-center justify-center">
-                <p className="text-slate-600">Invalid QR Code</p>
-              </div>
-            )
+          {renderSrc ? (
+            <img
+              src={renderSrc}
+              alt="WhatsApp QR Code"
+              className="w-64 h-64 rounded-lg"
+            />
+          ) : qrCode ? (
+            <div className="w-64 h-64 bg-slate-100 rounded-lg flex items-center justify-center">
+              <p className="text-slate-600">Preparing QR Code...</p>
+            </div>
           ) : (
             <div className="w-64 h-64 bg-slate-100 rounded-lg flex items-center justify-center">
               <p className="text-slate-600">Loading QR Code...</p>
