@@ -26,7 +26,14 @@ export interface MessageStats {
 export const messageService = {
   async sendMessage(data: SendMessageRequest): Promise<Message> {
     try {
-      const response = await api.post<Message>('/message/send', data);
+      // Use Evolution API format: POST /message/sendText/{instanceId}
+      const response = await api.post<Message>(
+        `/message/sendText/${data.instanceId}`,
+        {
+          number: data.to,
+          text: data.body,
+        }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -49,6 +56,16 @@ export const messageService = {
       }
 
       const response = await api.get<Message[]>(`/message/list?${params}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async fetchMessages(instanceId: string): Promise<any> {
+    try {
+      // Evolution API: GET /message/fetch/{instanceId}
+      const response = await api.get(`/message/fetch/${instanceId}`);
       return response.data;
     } catch (error) {
       throw error;

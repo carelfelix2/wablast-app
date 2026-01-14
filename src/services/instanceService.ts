@@ -17,7 +17,8 @@ export interface CreateInstanceRequest {
 export const instanceService = {
   async getInstances(): Promise<Instance[]> {
     try {
-      const response = await api.get<Instance[]>('/instance/list');
+      // Evolution API: GET /instances
+      const response = await api.get<Instance[]>('/instances');
       return response.data;
     } catch (error) {
       throw error;
