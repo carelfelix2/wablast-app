@@ -31,8 +31,12 @@ export default function DashboardLayout({
     <div className="flex h-screen bg-slate-50">
       <Sidebar />
       <div className="flex-1 flex flex-col md:ml-64">
-        <Navbar />
-        <main className="flex-1 overflow-auto pt-16 md:pt-0">
+        {/* Desktop Navbar */}
+        <div className="hidden md:block h-16 border-b border-slate-200 bg-white sticky top-0 z-20">
+          <Navbar />
+        </div>
+        {/* Main Content */}
+        <main className="flex-1 overflow-auto">
           <div className="p-6">{children}</div>
         </main>
       </div>

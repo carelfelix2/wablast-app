@@ -31,7 +31,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed md:fixed md:left-64 md:right-0 md:top-0 top-0 left-20 right-0 h-16 bg-white border-b border-slate-200 flex items-center justify-end px-6 z-30">
+    <nav className="h-16 bg-white border-b border-slate-200 flex items-center justify-end px-6">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
