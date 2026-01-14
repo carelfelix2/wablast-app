@@ -13,6 +13,7 @@ export interface UserStore {
   token: string | null;
   setUser: (user: User) => void;
   setToken: (token: string) => void;
+  updateApiKey: (apiKey: string) => void;
   logout: () => void;
   isAuthenticated: () => boolean;
 }
@@ -24,6 +25,12 @@ export const useUserStore = create<UserStore>()(
       token: null,
       setUser: (user: User) => set({ user }),
       setToken: (token: string) => set({ token }),
+      updateApiKey: (apiKey: string) => {
+        const state = get();
+        if (state.user) {
+          set({ user: { ...state.user, apiKey } });
+        }
+      },
       logout: () => set({ user: null, token: null }),
       isAuthenticated: () => {
         const state = get();

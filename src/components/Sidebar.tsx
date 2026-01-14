@@ -12,6 +12,11 @@ import {
   X,
   Users,
   BookUser,
+  RotateCcw,
+  FileText,
+  Zap,
+  Link2,
+  Clock,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useUserStore } from '@/lib/useUserStore';
@@ -29,6 +34,31 @@ export function Sidebar() {
     { href: '/dashboard/messages', label: 'Messages', icon: MessageSquare },
     { href: '/dashboard/contacts', label: 'Contacts', icon: BookUser },
     { href: '/dashboard/groups', label: 'Groups', icon: Users },
+    { 
+      href: '/dashboard/auto-reply', 
+      label: 'Auto Reply', 
+      icon: RotateCcw 
+    },
+    {
+      href: '/dashboard/schedule',
+      label: 'Schedule',
+      icon: Clock,
+    },
+    {
+      href: '/dashboard/templates',
+      label: 'Templates',
+      icon: FileText,
+    },
+    {
+      href: '/dashboard/agents',
+      label: 'Agents',
+      icon: Users,
+    },
+    {
+      href: '/dashboard/webhooks',
+      label: 'Webhooks',
+      icon: Link2,
+    },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   ];
 
@@ -56,14 +86,14 @@ export function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-40 h-screen w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 z-40 h-screen w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out overflow-y-auto ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div className="p-6">
           <div className="text-2xl font-bold text-green-500 mb-8">WABlast</div>
 
-          <nav className="space-y-2">
+          <nav className="space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -73,13 +103,13 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors ${
                     isActive
                       ? 'bg-green-600 text-white'
                       : 'text-slate-300 hover:bg-slate-800'
                   }`}
                 >
-                  <Icon size={20} />
+                  <Icon size={18} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -88,9 +118,9 @@ export function Sidebar() {
 
           <button
             onClick={handleLogout}
-            className="mt-8 w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors"
+            className="mt-8 w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800 transition-colors"
           >
-            <LogOut size={20} />
+            <LogOut size={18} />
             <span>Logout</span>
           </button>
         </div>

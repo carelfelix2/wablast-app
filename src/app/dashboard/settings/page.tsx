@@ -10,7 +10,7 @@ import { useToast } from '@/lib/useToast';
 import { billingService } from '@/services/billingService';
 
 export default function SettingsPage() {
-  const { user } = useUserStore();
+  const { user, updateApiKey } = useUserStore();
   const { success, error: showError, info } = useToast();
   const [apiKey, setApiKey] = useState('••••••••••••••••');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -32,6 +32,7 @@ export default function SettingsPage() {
     try {
       const { apiKey: newApiKey } = await billingService.generateAPIKey();
       setApiKey(newApiKey);
+      updateApiKey(newApiKey);
       setShowApiKey(true);
       success('API Key generated successfully!');
     } catch (error) {

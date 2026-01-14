@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { QRCodeSVG } from 'qrcode.react';
 
 interface QRCodeModalProps {
   open: boolean;
@@ -22,6 +21,8 @@ export function QRCodeModal({
   qrCode,
   instanceName,
 }: QRCodeModalProps) {
+  const isDataUrl = qrCode?.startsWith('data:');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="text-center">
@@ -34,12 +35,17 @@ export function QRCodeModal({
 
         <div className="flex justify-center py-6">
           {qrCode ? (
-            <QRCodeSVG
-              value={qrCode}
-              size={256}
-              level="H"
-              includeMargin={true}
-            />
+            isDataUrl ? (
+              <img
+                src={qrCode}
+                alt="WhatsApp QR Code"
+                className="w-64 h-64 rounded-lg"
+              />
+            ) : (
+              <div className="w-64 h-64 bg-slate-100 rounded-lg flex items-center justify-center">
+                <p className="text-slate-600">Invalid QR Code</p>
+              </div>
+            )
           ) : (
             <div className="w-64 h-64 bg-slate-100 rounded-lg flex items-center justify-center">
               <p className="text-slate-600">Loading QR Code...</p>
