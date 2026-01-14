@@ -10,6 +10,8 @@ import {
   LogOut,
   Menu,
   X,
+  Users,
+  BookUser,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useUserStore } from '@/lib/useUserStore';
@@ -25,6 +27,8 @@ export function Sidebar() {
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/dashboard/instances', label: 'Instances', icon: Smartphone },
     { href: '/dashboard/messages', label: 'Messages', icon: MessageSquare },
+    { href: '/dashboard/contacts', label: 'Contacts', icon: BookUser },
+    { href: '/dashboard/groups', label: 'Groups', icon: Users },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   ];
 
