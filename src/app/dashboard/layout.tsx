@@ -13,17 +13,18 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated } = useUserStore();
+  const { isAuthenticated, user } = useUserStore();
   const { toasts, removeToast } = useToast();
 
   useEffect(() => {
+    // Check if user is authenticated
     if (!isAuthenticated()) {
       router.push('/login');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user, router]);
 
   if (!isAuthenticated()) {
-    return null;
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
 
   return (

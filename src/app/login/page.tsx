@@ -28,8 +28,15 @@ export default function LoginPage() {
 
           <LoginForm />
 
-          <p className="mt-6 text-center text-sm text-slate-600">
-            Demo: Use any credentials to test the interface
+          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-900 font-medium mb-2">🔓 Demo Mode</p>
+            <p className="text-xs text-blue-800">
+              Use any email & password (min 6 chars) to access the dashboard and test the interface.
+            </p>
+          </div>
+
+          <p className="mt-4 text-center text-xs text-slate-600">
+            📝 Example: <code className="bg-slate-100 px-2 py-1 rounded">demo@wablast.com</code> / <code className="bg-slate-100 px-2 py-1 rounded">password123</code>
           </p>
         </div>
       </div>
