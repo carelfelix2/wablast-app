@@ -17,6 +17,7 @@ import {
   Zap,
   Link2,
   Clock,
+  BookOpen,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useUserStore } from '@/lib/useUserStore';
@@ -58,6 +59,11 @@ export function Sidebar() {
       href: '/dashboard/webhooks',
       label: 'Webhooks',
       icon: Link2,
+    },
+    {
+      href: '/dashboard/docs',
+      label: 'Docs',
+      icon: BookOpen,
     },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   ];
