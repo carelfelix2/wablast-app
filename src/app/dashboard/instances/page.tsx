@@ -215,7 +215,7 @@ export default function InstancesPage() {
 
       <QRCodeModal
         open={qrCodeModal.open}
-        onOpenChange={(open) =>
+        onOpenChange={(open: boolean) =>
           setQRCodeModal({ ...qrCodeModal, open })
         }
         qrCode={qrCodeModal.qrCode}

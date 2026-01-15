@@ -29,7 +29,7 @@ const agentSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Valid email required'),
   phoneNumber: z
     .string()
-    .optional()
+    .default('')
     .refine(
       (val) => !val || /^62\d{9,13}$/.test(val),
       'Valid phone number required'
@@ -39,7 +39,7 @@ const agentSchema = z.object({
     .min(1, 'Max conversations must be at least 1')
     .max(100, 'Max conversations cannot exceed 100'),
   // Keep as string in the form; we'll convert to array on submit
-  keywords: z.string().default(''),
+  keywords: z.string(),
 });
 
 type AgentFormInput = z.input<typeof agentSchema>;
@@ -71,6 +71,9 @@ export default function AgentsPage() {
   } = useForm<AgentFormInput>({
     resolver: zodResolver(agentSchema),
     defaultValues: {
+      name: '',
+      email: '',
+      phoneNumber: '',
       maxConversations: 10,
       keywords: '',
     },

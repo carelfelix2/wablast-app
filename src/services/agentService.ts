@@ -93,9 +93,10 @@ export const agentService = {
       return response.data;
     } catch (error) {
       // Demo mode
+      const { id, ...rest } = data;
       return {
-        id: data.id,
-        ...data,
+        id,
+        ...rest,
         status: 'offline',
         assignedConversations: 0,
         createdAt: new Date().toISOString(),

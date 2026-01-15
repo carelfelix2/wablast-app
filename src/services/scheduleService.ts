@@ -66,9 +66,10 @@ export const scheduleService = {
       return response.data;
     } catch (error) {
       // Demo mode
+      const { id, ...rest } = data;
       return {
-        id: data.id,
-        ...data,
+        id,
+        ...rest,
         status: 'pending',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

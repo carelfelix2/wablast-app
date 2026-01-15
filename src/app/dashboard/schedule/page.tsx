@@ -23,20 +23,15 @@ import { z } from 'zod';
 import dayjs from 'dayjs';
 
 const scheduleSchema = z.object({
-  recipients: z
-    .string()
-    .min(1, 'Recipients are required')
-    .transform((v) => v.split('\n').filter((x) => x.trim())),
+  recipients: z.string().min(1, 'Recipients are required'),
   message: z
     .string()
     .min(1, 'Message is required')
     .max(4096, 'Message is too long'),
-  scheduledAt: z
-    .string()
-    .min(1, 'Scheduled date and time is required'),
+  scheduledAt: z.string().min(1, 'Scheduled date and time is required'),
 });
 
-type ScheduleFormData = z.infer<typeof scheduleSchema>;
+type ScheduleFormInput = z.input<typeof scheduleSchema>;
 
 export default function SchedulePage() {
   const { success, error: showError, info } = useToast();
@@ -52,7 +47,7 @@ export default function SchedulePage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ScheduleFormData>({
+  } = useForm<ScheduleFormInput>({
     resolver: zodResolver(scheduleSchema),
   });
 
@@ -90,12 +85,16 @@ export default function SchedulePage() {
     }
   };
 
-  const onSubmit = async (data: ScheduleFormData) => {
+  const onSubmit = async (data: ScheduleFormInput) => {
     setIsSubmitting(true);
     try {
+      const recipientsArray = data.recipients
+        .split('\n')
+        .map((x) => x.trim())
+        .filter((x) => x);
       await scheduleService.createSchedule({
         instanceId: selectedInstanceId,
-        recipients: data.recipients,
+        recipients: recipientsArray,
         message: data.message,
         scheduledAt: data.scheduledAt,
       });

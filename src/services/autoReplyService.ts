@@ -76,9 +76,10 @@ export const autoReplyService = {
       return response.data;
     } catch (error) {
       // Demo mode
+      const { id, ...rest } = data;
       return {
-        id: data.id,
-        ...data,
+        id,
+        ...rest,
         isActive: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

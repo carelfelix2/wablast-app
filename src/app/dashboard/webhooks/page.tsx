@@ -24,12 +24,10 @@ import dayjs from 'dayjs';
 
 const webhookSchema = z.object({
   url: z.string().url('Valid URL required'),
-  events: z
-    .string()
-    .transform((v) => v.split('\n').filter((x) => x.trim())),
+  events: z.string(),
 });
 
-type WebhookFormData = z.infer<typeof webhookSchema>;
+type WebhookFormInput = z.input<typeof webhookSchema>;
 
 interface DialogState {
   type: 'webhook' | 'logs' | null;
@@ -58,7 +56,7 @@ export default function WebhooksPage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<WebhookFormData>({
+  } = useForm<WebhookFormInput>({
     resolver: zodResolver(webhookSchema),
   });
 
@@ -115,21 +113,25 @@ export default function WebhooksPage() {
     }
   };
 
-  const onSubmit = async (data: WebhookFormData) => {
+  const onSubmit = async (data: WebhookFormInput) => {
     setIsSubmitting(true);
     try {
+      const eventsArray = data.events
+        .split('\n')
+        .map((x) => x.trim())
+        .filter((x) => x);
       if (dialogState.editingWebhook) {
         await webhookService.updateWebhook(dialogState.editingWebhook.id, {
           instanceId: selectedInstanceId,
           url: data.url,
-          events: data.events,
+          events: eventsArray,
         });
         success('Webhook updated successfully');
       } else {
         await webhookService.registerWebhook({
           instanceId: selectedInstanceId,
           url: data.url,
-          events: data.events,
+          events: eventsArray,
         });
         success('Webhook registered successfully');
       }
@@ -190,7 +192,7 @@ export default function WebhooksPage() {
     if (webhook) {
       reset({
         url: webhook.url,
-        events: webhook.events.join('\n'),
+        events: webhook.events.join('\n') as any,
       });
       setDialogState({
         type: 'webhook',
@@ -198,7 +200,10 @@ export default function WebhooksPage() {
         editingWebhook: webhook,
       });
     } else {
-      reset();
+      reset({
+        url: '',
+        events: '',
+      });
       setDialogState({ type: 'webhook', isOpen: true });
     }
   };
